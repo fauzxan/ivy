@@ -21,6 +21,25 @@ func (client *Client) CallCentralRPC(msg message.Message, IP string) message.Mes
 		reply.Type = EMPTY
 		return reply
 	}
+	system.Println("Client ", client.IP ," received reply from ", IP)
+	return reply
+}
+
+func (client *Client) CallRPC(msg message.Message, IP string) message.Message {
+	system.Println("Client ", client.IP, " is sending message of type ", msg.Type, " to ", IP)
+	clnt, err := rpc.Dial("tcp", IP)
+	reply := message.Message{}
+	if err != nil {
+		system.Println("Error dialing RPC", msg.Type)
+		reply.Type = EMPTY
+		return reply
+	}
+	err = clnt.Call("Client.HandleIncomingMessage", msg, &reply)
+	if err != nil {
+		system.Println("Error callling RPC", msg.Type)
+		reply.Type = EMPTY
+		return reply
+	}
 	system.Println("Client ", client.IP ," received reply from ", msg.From)
 	return reply
 }
