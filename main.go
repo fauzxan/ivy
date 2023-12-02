@@ -93,6 +93,8 @@ func main() {
                                 me.PrintCentralIP()
                         case "3":
                                 me.ReadRequest()
+                        case "4":
+                                me.WriteRequest()
                         default:
                                 system.Println("Enter valid input")
                         }
@@ -133,6 +135,9 @@ func main() {
                         case "1":
                                 system.Println("Clientlist requested")
                                 me.PrintClientList()
+                        case "2":
+                                system.Println("Records requested")
+                                me.PrintRecords()
                         default:
                                 system.Println("Enter valid input")
                         }
