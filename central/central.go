@@ -2,7 +2,7 @@ package central
 
 import (
         "container/list"
-        "ivy/message"
+        "github.com/fauzxan/ivy/message"
         "log"
         "time"
 

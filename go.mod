@@ -1,4 +1,4 @@
-module ivy
+module github.com/fauzxan/ivy
 
 go 1.21.1
 

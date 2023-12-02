@@ -1,7 +1,7 @@
 package client
 
 import (
-	"ivy/message"
+	"github.com/fauzxan/ivy/message"
 	"net/rpc"
 )
 

@@ -2,8 +2,8 @@ package main
 
 import (
         "fmt"
-        "ivy/central"
-        "ivy/client"
+        "github.com/fauzxan/ivy/central"
+        "github.com/fauzxan/ivy/client"
         "net"
         "net/rpc"
         "os"

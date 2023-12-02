@@ -1,7 +1,7 @@
 package central
 
 import (
-        "ivy/message"
+        "github.com/fauzxan/ivy/message"
         "net/rpc"
 )
 
