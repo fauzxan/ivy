@@ -69,6 +69,8 @@ Only way you stop this never ending cycle is by killing the client.
 
 # Some interesting design details
 
+Details that needed documentation due to intricacy of the design.
+
 ## How do reads happen?
 ![image](https://github.com/fauzxan/ivy/assets/92146562/38ec64ab-4a91-4d3e-86c1-a452ddb6bda1)
 
@@ -78,3 +80,25 @@ Only way you stop this never ending cycle is by killing the client.
 
 Writes maintain a queue at the server. As of now, there is no inherent benefit to having a separate WRITE access mode at the client. This will be useful in scenarios where the client performs multiple computations on the page before falling back to write mode. However, the code only handles a single variable update for any page. 
 
+## How does the reboot happen?
+Now, this is a rather complicated process, as it involves having to check if I was the primary or not. 
+
+However, I will simplify the explanation here. 
+
+We have two variables associated with both, the primary and the backup. 
+
+```go
+	DoIPing   bool
+	DoesTheOtherPing bool
+```
+
+Variable names speak for themselves. But once a the central manager goes down, it sends flushes some data to the backup. Part of this data is to tell the backup to start pinging the main, in case it comes back up. 
+
+Now, once the main comes back up, it is not going to know that it was the main server. So, the backup, which was pinging the main server before, will now tell the main server that you do not need to ping me anymore. 
+
+If the backup goes down, it is non-consequential, as the main server does not need to get any information from it. 
+
+A brief explanation of how this works has been shown in the diagram below:
+![image](https://github.com/fauzxan/ivy/assets/92146562/a3b57d6d-a0b5-421e-8eae-b9de5467f02a)
+
+The above guarantees that the server is aware of itself when it reboots. And the backup manager is aware that it is the backup manager. 
