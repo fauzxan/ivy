@@ -21,7 +21,7 @@ func (client *Client) CallCentralRPC(msg message.Message, IP string) message.Mes
 		reply.Type = EMPTY
 		return reply
 	}
-	system.Println("Client ", client.IP ," received reply from ", IP)
+	// system.Println("Client ", client.IP ," received reply from ", IP)
 	return reply
 }
 
@@ -50,4 +50,8 @@ func (client *Client) PrintClientList(){
 
 func (client *Client) PrintCentralIP(){
 	system.Println(client.ServerIP)
+}
+
+func (client *Client) PrintPages(){
+	system.Println(client.Cache)
 }

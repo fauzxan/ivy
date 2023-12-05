@@ -33,6 +33,7 @@ const (
         FIRST              = "first" // When you're the first node requesting read access to the page, so you can directly set it's
         ACK                = "ack"
         I_HAVE_COPY        = "i_have_copy"
+        NEW_SERVER		   = "new_server"
 )
 
 type Page struct {
@@ -58,13 +59,14 @@ func (client *Client) HandleIncomingMessage(msg *message.Message, reply *message
         case JOIN:
                 client.Clientlist = append(client.Clientlist, msg.From)
                 system.Println("Processed join request from", msg.From, client.Clientlist)
+                reply.Type = ACK
         case READ_FORWARD:
                 /*
                    I would receive read forward if someone somewhere has requested. I will receive read forward from the central manager.
                    Upon receipt, I just need to send a copy of the page to the requestor, which has been tagged in msg.From
                 */
                 system.Println("I received a message of type READ FORWARD for client", msg.From)
-                go client.CallRPC(message.Message{Type: COPY, Content: client.Cache[msg.PageId].Content, From: client.IP}, msg.From)
+                go client.CallRPC(message.Message{Type: COPY, Content: client.Cache[msg.PageId].Content, From: client.IP, PageId: msg.PageId}, msg.From)
         case WRITE_FORWARD:
                 system.Println("Received a write forward instruction. Will forward copy of ", msg.PageId, " to ", msg.From)
                 client.CallRPC(message.Message{Type: WRITE_COPY, From: client.IP, Content: client.Cache[msg.PageId].Content, PageId: msg.PageId}, msg.From)
@@ -82,7 +84,9 @@ func (client *Client) HandleIncomingMessage(msg *message.Message, reply *message
                 system.Println(msg.Type, " received for page ", msg.PageId)
                 go client.invalidate(msg.PageId)
                 reply.Type = ACK
-
+        case NEW_SERVER:
+                client.ServerIP = msg.From
+                system.Println("There is a new server: ", client.ServerIP)
         default:
                 log.Fatal("This should never happen???")
         }
@@ -102,7 +106,7 @@ func (client *Client) JoinNetwork(helper string) {
                 message := message.Message{Type: JOIN, From: client.IP}
                 copy := ip
                 go func() {
-                        client.CallCentralRPC(message, copy)
+                        client.CallRPC(message, copy)
                         system.Println("Successfully notified", copy)
                 }()
         }
