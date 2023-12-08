@@ -93,6 +93,10 @@ func (client *Client) HandleIncomingMessage(msg *message.Message, reply *message
         return nil
 }
 
+/*
+Function called to join the network, by contacting the central manager. This is so the central manager knows about you in its metadata.
+The client also obtains the clientlist from the central manager, and notifies all the other clients of its existence.
+*/
 func (client *Client) JoinNetwork(helper string) {
         client.ServerIP = helper
         // Contact the server and retrieve the clientlist first.
@@ -114,7 +118,8 @@ func (client *Client) JoinNetwork(helper string) {
 }
 
 /*
-A requesting node will first
+A requesting node will first check it's own cache and then check with the central manager, in case it doesn't have it. 
+It may also update the record and become it's owner, if there is no other node in the network that owns this page.
 */
 func (client *Client) ReadRequest() {
         for {

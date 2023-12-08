@@ -164,6 +164,8 @@ func (central *Central) CreateNetwork(backup string) {
 	}
 }
 
+/*
+*/
 func (central *Central) invalidateSender(pageid int) {
 	// extract the index of the page
 	record_id := -1

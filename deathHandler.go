@@ -18,7 +18,9 @@ import (
 
 var codered = color.New(color.FgHiRed).Add(color.BgBlack)
  
-
+/*
+The function that is called when ctrl+c in the terminal. This flushes data to the other server (backup), and exits.
+*/
 func SetupCloseHandler(cm *central.Central) {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
