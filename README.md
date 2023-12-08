@@ -16,7 +16,7 @@ Each server, backup, and client will run on a separate terminal, or even separat
 
 The first server you spin up will be the central manager.
 
-```
+```go
 go build && ./ivy -cm
 
 ```
@@ -48,9 +48,8 @@ The code is originally designed to assign a random, unused port number for the f
 
 So in order to reboot at the same port number, simply issue the following command:
 
-```
+```go
 go build && ./ivy -r <IP ADDRESS OF THE SERVER THAT JUST WENT DOWN>
-
 ```
 
 ### What happens when you reboot?
@@ -103,13 +102,14 @@ All results displayed are in ms. A sample of run with 10 clients, and two server
 
 Easiest to test of them all. No need to kill anything, just spawn ten terminals, and one server and keep them running.
 
+|  |  |  |  |  |  | 
+| --- | --- | --- | --- | --- | --- | 
 | Highest time | 14248 | 14245 | 14235 | 13498 | 14248 |
-| --- | --- | --- | --- | --- | --- |
 | Lowest time | 751 | 751 | 751 | 750 | 750 |
 
-**High time average:**14094.8
+**High time average:** 14094.8
 
-**Low time average:**750.6
+**Low time average:** 750.6
 
 **Average:** 7422.7
 
@@ -119,8 +119,9 @@ Spawn 2 servers- one central, and one backup, using the method described in the 
 
 ### Invariant 1: CM fails
 
-| Highest time | 14240 | 13461 | 14247 | 14240 | 14247 |
+|  |  |  |  |  |  |  
 | --- | --- | --- | --- | --- | --- |
+| Highest time | 14240 | 13461 | 14247 | 14240 | 14247 |
 | Lowest time | 751 | 751 | 750 | 750 | 751 |
 
 **High time average:** 14087
@@ -131,8 +132,9 @@ Spawn 2 servers- one central, and one backup, using the method described in the 
 
 ### Invariant 2: CM fails & reboots once
 
-| Highest time | 14259 | 14248 | 13497 | 14239 | 14229 |
+|  |  |  |  |  |  | 
 | --- | --- | --- | --- | --- | --- |
+| Highest time | 14259 | 14248 | 13497 | 14239 | 14229 |
 | Lowest time | 751 | 750 | 751 | 750 | 751 |
 
 **High time average:** 14094.4
@@ -145,9 +147,10 @@ Spawn 2 servers- one central, and one backup, using the method described in the 
 
 You can run this scenario in the same way as the previous one, but trigger failure and reboot multiple times, manually. 
 
-| Two servers, main fails, reboots multiple times | 14247 | 14237 | 13496 | 13494 | 14250 | 14239 | 14238 | 14196 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-|  | 752 | 761 | 750 | 756 | 760 | 754 | 750 | 751 |
+|  |  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- | --- |
+| Highest time | 14247 | 14237 | 13496 | 13494 | 14250 | 14239 | 14238 | 14196 |
+| Lowest time | 752 | 761 | 750 | 756 | 760 | 754 | 750 | 751 |
 
 **High time average:** 14049.63
 
@@ -163,9 +166,11 @@ For this scenario, you may sequentially perform the following:
 - kill backup CM, then reboot backup CM using backup CM IP address
 - … continue doing the above steps and record the observations
 
-| Two servers, main and backup fail, multiple times and reboot | 13498 | 13497 | 14243 | 13500 | 13497 | 14247 |
+|  |  |  |  |  |  |  |
 | --- | --- | --- | --- | --- | --- | --- |
-|  | 751 | 754 | 757 | 750 | 751 | 750 |
+| Highest time | 13498 | 13497 | 14243 | 13500 | 13497 | 14247 |
+| Lowest time | 751 | 754 | 757 | 750 | 751 | 750 |
+
 
 **High time average:** 13747
 
