@@ -118,7 +118,9 @@ func (central *Central) HandleIncomingMessage(msg *message.Message, reply *messa
 	case WRITE_CONFIRMATION:
 		system.Println("Received a write confirmation from ", msg.From, " for page ", msg.PageId)
 		frontElement := central.writeQueue[msg.PageId].Front() // Remove element from the head of the queue
-		central.writeQueue[msg.PageId].Remove(frontElement)
+		if central.writeQueue[msg.PageId].Len() != 0{
+			central.writeQueue[msg.PageId].Remove(frontElement)
+		}
 		if central.writeQueue[msg.PageId].Len() != 0 { // If there are any more requests, then execute write handler on that request.
 			frontElement = central.writeQueue[msg.PageId].Front()
 			ip, _ := frontElement.Value.(string)
@@ -177,7 +179,9 @@ func (central *Central) invalidateSender(pageid int) {
 				go central.CallRPC(message.Message{Type: INVALIDATE, PageId: pageid}, copyIP)
 			}
 			// removing the element to which you just sent invalidate to. remove the owner as well.
-			central.Records[record_id].Copies = append(central.Records[record_id].Copies[:0], central.Records[record_id].Copies[1:]...)
+			if len(central.Records[record_id].Copies) > 0{
+				central.Records[record_id].Copies = append(central.Records[record_id].Copies[:0], central.Records[record_id].Copies[1:]...)
+			}
 		}
 	}
 

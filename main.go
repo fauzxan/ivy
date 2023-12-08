@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"net"
 	"net/rpc"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/fauzxan/ivy/central"
 	"github.com/fauzxan/ivy/client"
@@ -17,17 +19,13 @@ import (
 
 // Color coded logs
 var system = color.New(color.FgCyan).Add(color.BgBlack)
+var systemTime = color.New(color.FgHiRed).Add(color.BgBlack)
 
 /*
 Show a list of options to choose from.
 */
 func showmenu() {
-        system.Println("********************************")
-        system.Println("\t\tMENU")
-        system.Println("Press 1 to see the client list")
-        system.Println("Press 2 for something")
-        system.Println("Press m to see the menu")
-        system.Println("********************************")
+
 }
 
 func main() {
@@ -98,6 +96,14 @@ func main() {
 
                 // Keep the parent thread alive
                 for {
+                        system.Println("********************************")
+                        system.Println("\t\tMENU")
+                        system.Println("Press 1 to see the client list")
+                        system.Println("Press 2 to see which Central Manager you are contacting now")
+                        system.Println("Press 3 to start the read/write loop. The client will randomly read/write from/to a page")
+                        system.Println("Press 4 to see the pages cached in this client")
+                        system.Println("Press m to see the menu")
+                        system.Println("********************************")
                         system.Println("Alive")
                         var input string
                         fmt.Scanln(&input)
@@ -109,10 +115,25 @@ func main() {
                                 system.Println("Server IP Requested")
                                 me.PrintCentralIP()
                         case "3":
-                                me.ReadRequest()
+                                go func(){
+                                        for
+                                        {
+                                                res :=rand.Intn(2)
+                                                if res == 1{
+                                                        start := time.Now().UnixMilli()
+                                                        me.ReadRequest()
+                                                        end := time.Now().UnixMilli()
+                                                        systemTime.Println("***********\nTIME TAKEN:", end-start, "\n***********")
+                                                } else{
+                                                        start := time.Now().UnixMilli()
+                                                        me.WriteRequest()
+                                                        end := time.Now().UnixMilli()
+                                                        systemTime.Println("***********\nTIME TAKEN:", end-start, "\n***********")
+                                                }
+                                        }
+                                }()
+                                
                         case "4":
-                                me.WriteRequest()
-                        case "5":
                                 me.PrintPages()
                         default:
                                 system.Println("Enter valid input")
@@ -152,6 +173,12 @@ func main() {
                 showmenu()
                 // Keep the parent thread alive
                 for {
+                        system.Println("********************************")
+                        system.Println("\t\tMENU")
+                        system.Println("Press 1 to see the client list")
+                        system.Println("Press 2 to see the records metadata. This will show you which nodes own which pages, and who has copies")
+                        system.Println("Press m to see the menu")
+                        system.Println("********************************")
                         system.Println("Alive")
                         var input string
                         fmt.Scanln(&input)

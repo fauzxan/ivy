@@ -119,7 +119,7 @@ A requesting node will first
 func (client *Client) ReadRequest() {
         for {
                 timeNow := time.Now()
-                if timeNow.Second()%10 == 0 {
+                if timeNow.Second()%15 == 0 {
                         break
                 }
         } // Even if I press one at slightly different times, they will all send simultaneously at the same time.
@@ -146,7 +146,7 @@ func (client *Client) ReadRequest() {
 func (client *Client) WriteRequest() {
         for {
                 timeNow := time.Now()
-                if timeNow.Second()%10 == 0 {
+                if timeNow.Second()%15 == 0 {
                         break
                 }
         } // Even if I press one at slightly different times, they will all send concurrently at the same time.
